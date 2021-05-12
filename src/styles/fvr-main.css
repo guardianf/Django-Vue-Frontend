@@ -1,0 +1,271 @@
+@font-face {
+  font-family: "HG";
+  src: url(../fonts/OPTIHandelGothic-Light.otf) format("opentype");
+}
+:root {
+  --color-default: #797979;
+  --color-darkblue: #285780;
+  --color-lightblue: #7bafd4;
+  --color-lightgrey: #787878;
+  --color-font-default: #797979;
+  --color-font-hover: #285780;
+  --color-border-default: #e2e2e2;
+  /* s-state */
+  --color-active: #285780;
+  --color-hover: #F5F7FA;
+  /* e-state */
+}
+* {
+  font-family: "HG", "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  font-size: inherit;
+}
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+/** logo **/
+.fvr-logo {
+    height: 60px;
+}
+
+/** container **/
+.fvr-container {
+    line-height: 1.7;
+    height: 100%;
+}
+
+/** main **/
+.fvr-main {
+    padding: 0;
+}
+
+/** aside **/
+.fvr-aside {
+  /* width: 335px;  */
+}
+
+/** banner **/
+.fvr-banner {
+    display: flex;
+    flex-flow: row;
+    box-shadow: var(--color-border-default) 0 1px 2px 0px;
+    z-index: 1;
+}
+
+/** menu **/
+.fvr-menu {
+  width: 235px;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  color: #797979;
+}
+.fvr-menu.el-menu--collapse {
+  width: 62px;
+}
+.fvr-menu .el-submenu__title span {
+  color: #797979;
+  padding-left: 0px;
+}
+.fvr-menu.el-menu--collapse > div > .el-submenu > .el-submenu__title span {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
+  display: inline-block;
+}
+.fvr-menu.el-menu--collapse
+  > div
+  > .el-submenu
+  > .el-submenu__title
+  .el-submenu__icon-arrow {
+  display: none;
+}
+.fvr-menu.el-menu--collapse > div > .el-menu-item span {
+  display: none;
+}
+.fvr-menu .fvr-menu--span {
+  flex: 1;
+}
+.fvr-submenu .el-submenu__title:focus, .fvr-submenu .el-submenu__title:hover {
+  background-color: var(--color-hover);
+}
+.fvr-submenu .el-submenu__title:focus .fvr-submenu--icon, .fvr-submenu .el-submenu__title:hover .fvr-submenu--icon,
+.fvr-submenu .el-submenu__title:focus .fvr-menu-item--label, .fvr-submenu .el-submenu__title:hover .fvr-menu-item--label {
+  color: var(--color-text-hover);
+}
+.fvr-menu-item--label {
+  padding-left: 0px;
+}
+.fvr-submenu .fvr-menu-item--label {
+  padding-left: 10px;
+  display: inline-block;
+}
+.fvr-menu i, .fvr-menu-item-group i {
+  font-style: normal;
+  color: var(--color-text-hover);
+}
+.fvr-menu .fvr-menu-item-group .el-menu-item-group__title {
+  height: 0;
+  width: 0;
+  display: none;
+}
+.fvr-menu-item-group .el-menu-item-group__title {
+  font-size: 16px;
+  height: 56px;
+  line-height: 56px;
+  padding: 0 20px;
+  border-bottom: 1px solid #efefef;
+}
+.fvr-menu-item .el-tooltip {
+  outline: none;
+}
+
+.fvr-menu-item {
+  color: #797979;
+}
+.fvr-menu-item.is-active {
+  color: var(--color-text-hover);
+  box-shadow: inset var(--color-text-hover)  4px 0 0;/*left side bar to light current active menu */
+  font-weight: bold;
+  background: #F5F7FA;
+}
+.fvr-menu-item .fvr-menu-item--title {
+  display: none;
+}
+.fvr-menu-item:focus, .fvr-menu-item:hover {
+  background-color: var(--color-hover);
+}
+.fvr-menu-item:focus .fvr-menu-item--icon, .fvr-menu-item:hover .fvr-menu-item--icon,
+.fvr-menu-item:focus .fvr-menu-item--label, .fvr-menu-item:hover .fvr-menu-item--label {
+  color: var(--color-text-hover);
+}
+.fvr-menu-item--topline {
+  border-top: 1px solid #DCDFE6;
+}
+.el-menu--popup-right-start{
+  border-top: 2px solid var(--color-text-hover);
+}
+.el-menu--popup{
+  padding:  0;
+}
+
+/** font & size definition **/
+[class*=fvr-font-] {
+  user-select: none;
+}
+.fvr-font-xl {
+    font-size: 20px;
+}
+.fvr-font-l {
+    font-size: 18px;
+}
+.fvr-font-m {
+    font-size: 16px;
+}
+.fvr-font-b {
+    font-size: 14px;
+}
+.fvr-font-s {
+    font-size: 13px;
+}
+.fvr-font-xs {
+    font-size: 12px;
+}
+.fvr-font-color-default {
+    color: #797979;
+}
+.fvr-font-color-error {
+    color: #f56c6c;
+}
+
+
+
+.fvr-input-outside {
+    height: 52px;
+}
+.fvr-input-focus .fvr-input-underline {
+    border-color: #7bafd4;
+}
+.fvr-input-error .fvr-input-underline{
+    border-color: #f56c6c;
+}
+
+.fvr-input-underline {
+    border-bottom: 1px solid #979797;
+    height: 41px;
+}
+.fvr-input-inside {
+    outline: none;
+    border: none;
+    padding: 0 0 0 10px;
+    flex: 1;
+    height: 100%;
+}
+
+.fvr-fullfill {
+    flex: 1;
+}
+
+.fvr-dropdown-menu {
+    padding: 0;
+    box-shadow: var(--color-border-default) 0px 1px 2px 0px;
+    overflow: hidden;
+}
+.fvr-dropdown-menu .el-dropdown-menu__item:focus, .fvr-dropdown-menu .el-dropdown-menu__item:not(.is-disabled):hover {
+    background-color: #7bafd4;
+    color: #ffffff;
+}
+.fvr-dropdown-menu.el-popper[x-placement^=bottom] .popper__arrow {
+    display: none;
+}
+.fvr-dropdown .el-icon--right {
+    transition-duration: 300ms;
+}
+
+.fvr-dropdown.fvr-dropdown-hover .el-icon--right {
+    transform: rotate(-180deg);
+}
+
+.fvr-checkbox {
+
+}
+.fvr-checkbox .el-checkbox__label {
+  font-size: inherit;
+}
+
+/** button **/
+.fvr-button.fvr-button--primary,
+.fvr-button.fvr-button--primary:focus {
+  background-color: var(--color-darkblue);
+  color: #ffffff;
+}
+.fvr-button, .fvr-button:focus {
+  min-width: 30px;
+  background-color: #ffffff;
+}
+.fvr-button--icon, .fvr-button--icon:focus {
+  font-size: 25px;
+  background-color: transparent;
+  color: #7bafd4;
+  padding: 0;
+  border-color: transparent;
+}
+.fvr-button--icon:hover {
+  color: var(--color-font-hover);
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.fvr-button--text, .fvr-button--text:focus {
+  color: #7bafd4;
+}
+.fvr-button--text:hover {
+  color: var(--color-font-hover);
+}
+.fvr-button.is-disabled, .fvr-button.is-disabled:focus, .fvr-button.is-disabled:hover {
+  background-color: transparent;
+}
+/** button end **/
