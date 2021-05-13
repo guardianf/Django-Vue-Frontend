@@ -26,11 +26,12 @@ const users = {
 module.exports = [
   // user login
   // {
-  //   url: '/api/v1/user/login',
+  //   url: '/api/v1/login/',
   //   type: 'post',
   //   response: config => {
   //     const { username } = config.body
   //     const token = tokens[username]
+  //     console.log(username, token)
 
   //     // mock error
   //     if (!token) {
@@ -41,34 +42,35 @@ module.exports = [
   //     }
 
   //     return {
-  //       code: 20000,
+  //       code: 200,
   //       data: token
   //     }
   //   }
   // },
 
   // get user info
-  {
-    url: '/api/v1/user/info/',
-    type: 'get',
-    response: config => {
-      const { token } = config.query
-      const info = users[token]
+  // {
+  //   url: '/api/v1/user/info/',
+  //   type: 'get',
+  //   response: config => {
+  //     // const { token } = config.query
+  //     const token = 'admin-token'
+  //     const info = users[token]
 
-      // mock error
-      // if (!info) {
-      //   return {
-      //     code: 50008,
-      //     message: 'Login failed, unable to get user details.'
-      //   }
-      // }
+  //     // mock error
+  //     if (!info) {
+  //       return {
+  //         code: 50008,
+  //         message: 'Login failed, unable to get user details.'
+  //       }
+  //     }
 
-      return {
-        code: 200,
-        data: info
-      }
-    }
-  },
+  //     return {
+  //       code: 200,
+  //       data: info
+  //     }
+  //   }
+  // },
 
   // user logout
   {

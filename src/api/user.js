@@ -11,7 +11,11 @@ export function login(data) {
   return request({
     url: '/api/v1/login/',
     method: 'post',
-    data: formData
+    data: formData,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/form-data'
+    }
   })
 }
 
