@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import FvrFont from '@/components/Font'
+import FvrFont from '../Font'
 
 export default {
   name: 'FvrBanner',

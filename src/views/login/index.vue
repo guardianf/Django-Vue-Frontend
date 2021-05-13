@@ -3,16 +3,14 @@
     <fvr-banner />
 
     <el-main>
-      <el-row type="flex" align='middle' style="height: 100%;">
-        <el-col :span="12"></el-col>
+      <el-row type="flex" align="middle" style="height: 100%;">
+        <el-col :span="12" />
         <el-col :span="12">
-          <el-row align='middle' justify='center' type="flex">
-            <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-          
+          <el-row align="middle" justify="center" type="flex">
+            <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="off" label-position="left">
               <div class="title-container">
                 <h3 class="title">Sign In</h3>
               </div>
-
               <el-form-item prop="username">
                 <span class="svg-container">
                   <svg-icon icon-class="user" />
@@ -24,10 +22,9 @@
                   name="username"
                   type="text"
                   tabindex="1"
-                  autocomplete="on"
+                  autocomplete="off"
                 />
               </el-form-item>
-
               <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
                 <el-form-item prop="password">
                   <span class="svg-container">
@@ -41,7 +38,7 @@
                     placeholder="Password"
                     name="password"
                     tabindex="2"
-                    autocomplete="on"
+                    autocomplete="off"
                     @keyup.native="checkCapslock"
                     @blur="capsTooltip = false"
                     @keyup.enter.native="handleLogin"
@@ -51,47 +48,55 @@
                   </span>
                 </el-form-item>
               </el-tooltip>
-
+              <el-form-item prop="captcha">
+                <fvr-captcha
+                  ref="captcha"
+                  v-model="loginForm.captcha"
+                  placeholder="Captcha"
+                  name="captcha"
+                  type="text"
+                  tabindex="3"
+                  autocomplete="off"
+                />
+              </el-form-item>
               <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
             </el-form>
           </el-row>
         </el-col>
       </el-row>
-      
     </el-main>
   </el-container>
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
-import SocialSign from './components/SocialSignin'
-import fvrBanner from '@/components/Banner'
+import fvrBanner from '@/components/Fvr/Banner'
+import fvrCaptcha from '@/components/Fvr/Captcha'
 
 export default {
   name: 'Login',
   components: {
-    SocialSign, fvrBanner
+    fvrBanner, fvrCaptcha
   },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+      if (!value) {
+        callback(new Error('username is required'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (!value) {
+        callback(new Error('password is required'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'yubin',
+        password: '1',
+        captcha: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
