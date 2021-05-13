@@ -25,46 +25,46 @@ const users = {
 
 module.exports = [
   // user login
-  {
-    url: '/vue-element-admin/user/login',
-    type: 'post',
-    response: config => {
-      const { username } = config.body
-      const token = tokens[username]
+  // {
+  //   url: '/api/v1/user/login',
+  //   type: 'post',
+  //   response: config => {
+  //     const { username } = config.body
+  //     const token = tokens[username]
 
-      // mock error
-      if (!token) {
-        return {
-          code: 60204,
-          message: 'Account and password are incorrect.'
-        }
-      }
+  //     // mock error
+  //     if (!token) {
+  //       return {
+  //         code: 60204,
+  //         message: 'Account and password are incorrect.'
+  //       }
+  //     }
 
-      return {
-        code: 20000,
-        data: token
-      }
-    }
-  },
+  //     return {
+  //       code: 20000,
+  //       data: token
+  //     }
+  //   }
+  // },
 
   // get user info
   {
-    url: '/vue-element-admin/user/info\.*',
+    url: '/api/v1/user/info/',
     type: 'get',
     response: config => {
       const { token } = config.query
       const info = users[token]
 
       // mock error
-      if (!info) {
-        return {
-          code: 50008,
-          message: 'Login failed, unable to get user details.'
-        }
-      }
+      // if (!info) {
+      //   return {
+      //     code: 50008,
+      //     message: 'Login failed, unable to get user details.'
+      //   }
+      // }
 
       return {
-        code: 20000,
+        code: 200,
         data: info
       }
     }
@@ -72,11 +72,11 @@ module.exports = [
 
   // user logout
   {
-    url: '/vue-element-admin/user/logout',
+    url: '/api/v1/user/logout/',
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 200,
         data: 'success'
       }
     }
