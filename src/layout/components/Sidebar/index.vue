@@ -67,11 +67,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .fvr-menu {
   display: flex;
   flex-flow: column;
   .span {
     flex: 1;
+  }
+  // menu hover
+  .el-menu-item:hover {
+    background-color: $menuHover !important;
   }
 }
 </style>

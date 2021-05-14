@@ -178,33 +178,33 @@ export const asyncRoutes = [
   {
     path: '/management',
     component: Layout,
-    meta: { title: 'Management Service', icon: 'edit' },
+    meta: { title: 'Management Service', icon: 'edit', },
     children: [
       {
         path: 'user',
         component: () => import('@/views/tab/index'),
         name: 'User',
-        meta: { title: 'User', icon: 'tab' }
+        meta: { title: 'User', }
       }, {
         path: 'role',
         component: () => import('@/views/tab/index'),
         name: 'Role',
-        meta: { title: 'Role', icon: 'tab' }
+        meta: { title: 'Role', }
       }, {
         path: 'permission',
         component: () => import('@/views/tab/index'),
         name: 'Permission',
-        meta: { title: 'Permission', icon: 'tab' }
+        meta: { title: 'Permission', }
       }, {
         path: 'group',
         component: () => import('@/views/tab/index'),
         name: 'Group',
-        meta: { title: 'Group', icon: 'tab' }
+        meta: { title: 'Group', }
       }, {
         path: 'menu',
         component: () => import('@/views/tab/index'),
         name: 'Menu',
-        meta: { title: 'Menu', icon: 'tab' }
+        meta: { title: 'Menu', }
       }
     ]
   },
