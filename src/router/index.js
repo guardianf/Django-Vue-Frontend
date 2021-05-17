@@ -118,7 +118,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'arm',
-        component: () => import('@/views/permission/page'),
+        component: () => import('@/views/robot/Arm'),
         name: 'Arm',
         meta: {
           title: 'Arm',
