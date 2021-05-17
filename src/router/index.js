@@ -7,10 +7,10 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+// import componentsRouter from './modules/components'
+// import chartsRouter from './modules/charts'
+// import tableRouter from './modules/table'
+// import nestedRouter from './modules/nested'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -133,7 +133,7 @@ export const asyncRoutes = [
           title: 'Joint'
           // if do not set roles, means: this page does not require permission
         }
-      },
+      }
     ]
   },
 
@@ -151,10 +151,10 @@ export const asyncRoutes = [
   },
 
   /** when your routing map is too long, you can split it into small modules **/
- // componentsRouter,
- // chartsRouter,
- // nestedRouter,
- // tableRouter,
+  // componentsRouter,
+  // chartsRouter,
+  // nestedRouter,
+  // tableRouter,
 
   {
     path: '/download',
@@ -178,33 +178,33 @@ export const asyncRoutes = [
   {
     path: '/management',
     component: Layout,
-    meta: { title: 'Management Service', icon: 'edit', },
+    meta: { title: 'Management Service', icon: 'edit' },
     children: [
       {
         path: 'user',
         component: () => import('@/views/tab/index'),
         name: 'User',
-        meta: { title: 'User', }
+        meta: { title: 'User' }
       }, {
         path: 'role',
         component: () => import('@/views/tab/index'),
         name: 'Role',
-        meta: { title: 'Role', }
+        meta: { title: 'Role' }
       }, {
         path: 'permission',
         component: () => import('@/views/tab/index'),
         name: 'Permission',
-        meta: { title: 'Permission', }
+        meta: { title: 'Permission' }
       }, {
         path: 'group',
         component: () => import('@/views/tab/index'),
         name: 'Group',
-        meta: { title: 'Group', }
+        meta: { title: 'Group' }
       }, {
         path: 'menu',
         component: () => import('@/views/tab/index'),
         name: 'Menu',
-        meta: { title: 'Menu', }
+        meta: { title: 'Menu' }
       }
     ]
   },

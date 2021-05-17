@@ -24,21 +24,21 @@
 </template>
 
 <script>
-import { mapGetters, } from 'vuex'
+import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
 
 export default {
-  components: { SidebarItem, Logo, },
+  components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
       'permission_routes',
-      'sidebar',
-    ],),
+      'sidebar'
+    ]),
     activeMenu() {
       const route = this.$route
-      const { meta, path, } = route
+      const { meta, path } = route
       // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
         return meta.activeMenu
@@ -55,14 +55,14 @@ export default {
       return !this.sidebar.opened
     },
     collapseIcon() {
-      return this.isCollapse ? 'el-icon-d-arrow-right': 'el-icon-d-arrow-left'
-    },
+      return this.isCollapse ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left'
+    }
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar', { withoutAnimation: false })
-    },
-  },
+    }
+  }
 }
 </script>
 
@@ -78,6 +78,9 @@ export default {
   // menu hover
   .el-menu-item:hover {
     background-color: $menuHover !important;
+  }
+  li.el-menu-item.is-active {
+    box-shadow: inset red 4px 0 0 0;
   }
 }
 </style>
