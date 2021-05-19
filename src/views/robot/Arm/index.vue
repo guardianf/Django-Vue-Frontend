@@ -3,13 +3,13 @@
     <div class="btn-bar">
       <fvr-select v-model="customer" placeholder="Customer" multiple :options="customer_options" />
       <fvr-select v-model="arm_state" placeholder="State" multiple :options="arm_state_options" />
-      <el-button type="icon" class="el-icon-plus" content="add" @click.native="addItem" />
-      <el-button type="icon" class="el-icon-download" content="download" @click.native="downloadItems" />
-      <el-button type="icon" class="el-icon-refresh" content="refresh" @click.native="getItemList()" />
+      <fvr-button type="icon" class="el-icon-plus" content="add" @click.native="addItem" />
+      <fvr-button type="icon" class="el-icon-download" content="download" @click.native="downloadItems" />
+      <fvr-button type="icon" class="el-icon-refresh" content="refresh" @click.native="getItemList()" />
       <span style="flex: 1;" />
-      <el-input v-model="search" placeholder="serial number" clearable append="el-icon-search" @keyup.enter.native="getItemList(1)">
+      <fvr-input v-model="search" placeholder="serial number" clearable append="el-icon-search" @keyup.enter.native="getItemList(1)">
         <i slot="prepend" class="el-icon-search" style="padding: 10px;cursor: pointer;" @click="getItemList(1)" />
-      </el-input>
+      </fvr-input>
     </div>
     <el-table :data="tableData">
       <el-table-column label="No." type="index" :index="getIndex" />
@@ -20,8 +20,8 @@
       <el-table-column label="Action" width="100px">
         <template slot-scope="scope">
           <div style="display: flex;justify-content: space-around;">
-            <el-button type="icon" class="el-icon-edit-outline" @click.native="handleEdit(scope.$index, scope.row)" />
-            <el-button type="icon" class="el-icon-delete" @click.native="handleDelete(scope.$index, scope.row)" />
+            <fvr-button type="icon" class="el-icon-edit-outline" @click.native="handleEdit(scope.$index, scope.row)" />
+            <fvr-button type="icon" class="el-icon-delete" @click.native="handleDelete(scope.$index, scope.row)" />
           </div>
         </template>
       </el-table-column>
@@ -40,7 +40,7 @@
         <el-row type="flex" :gutter="20">
           <el-col :span="12">
             <fvr-font bold display="block" for="serialNumber">Serial Number</fvr-font>
-            <el-input v-model="item.serial_number" :disabled="isEdit ? true: false" @blur="uniqueCheck" />
+            <fvr-input v-model="item.serial_number" :disabled="isEdit ? true: false" @blur="uniqueCheck" />
           </el-col>
           <el-col :span="12">
             <fvr-font bold display="block" for="type">Type</fvr-font>
@@ -59,8 +59,8 @@
         </el-row>
       </el-form>
       <template slot="footer">
-        <el-button type="text" style="color: var(--color-default);" @click.native="itemDialogVisible = false;">Cancel</el-button>
-        <el-button type="text" style="font-weight: bold;" :disabled="createDisable" @click.native="saveItem">Save</el-button>
+        <fvr-button type="text" style="color: var(--color-default);" @click.native="itemDialogVisible = false;">Cancel</fvr-button>
+        <fvr-button type="text" style="font-weight: bold;" :disabled="createDisable" @click.native="saveItem">Save</fvr-button>
       </template>
     </el-dialog>
     <!-- <el-confirm-dialog message="Are you sure to delete this arm?" @confirm="deleteItem" ref="delete_check" />
@@ -73,9 +73,11 @@ import request from '@/utils/request'
 import { getCustomer, getDeviceState, getArms } from '@/api/robot'
 import fvrFont from '@/components/Fvr/Font'
 import fvrSelect from '@/components/Fvr/Select'
+import fvrInput from '@/components/Fvr/Input'
+import fvrButton from '@/components/Fvr/Button'
 
 export default {
-  components: { fvrFont, fvrSelect },
+  components: { fvrFont, fvrSelect, fvrInput, fvrButton },
   data() {
     return {
       customer: [], // filter: customer
@@ -135,7 +137,7 @@ export default {
       getDeviceState().then(res => {
         const { data } = res
         this.arm_state_options = data.map(item => {
-          const [value, label] = item
+          const [label, value] = item
           return {
             value, label
           }
@@ -159,7 +161,7 @@ export default {
         urlParams.push(`search=${this.search}`)
       }
       getArms(urlParams).then(res => {
-        const { code, data } = res;
+        const { code, data } = res
         if (code === 200) {
           const { results = [], count = 0, page_size = this.pageSize } = data
           console.log(results)
@@ -293,14 +295,17 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-  .btn-bar {
-    display: flex;
-    flex-flow: row;
-    & > *:not(:first-child) {
-      margin-left: 5px;
-    }
-    & > *:not(:last-child) {
-      margin-right: 5px;
-    }
+@import '@/styles/variables.scss';
+
+.btn-bar {
+  display: flex;
+  flex-flow: row;
+  margin-bottom: 20px;
+  & > *:not(:first-child) {
+    margin-left: 5px;
   }
+  & > *:not(:last-child) {
+    margin-right: 5px;
+  }
+}
 </style>

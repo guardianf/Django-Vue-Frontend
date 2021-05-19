@@ -24,6 +24,16 @@ $borderColor:#dfe6ec;
 $sideBarWidth: 235px;
 
 
+//font
+$fontcolor: #686868;
+
+$fontMain: #4a4a4a;
+$fontContent: #6b82a1;
+$fontPlaceholder: #5b6378;
+$fontLabel: #555555;
+$fontOther: #586381;
+$fontDisabled: #C0C4CC;
+
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {

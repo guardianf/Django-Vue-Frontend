@@ -1,5 +1,6 @@
 <template>
   <fvr-input
+    border="underline"
     :value="newValue"
     @input="submit"
   >

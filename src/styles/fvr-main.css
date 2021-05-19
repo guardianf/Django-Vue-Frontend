@@ -159,30 +159,6 @@ html, body {
     color: #f56c6c;
 }
 
-
-
-.fvr-input-outside {
-    height: 52px;
-}
-.fvr-input-focus .fvr-input-underline {
-    border-color: #7bafd4;
-}
-.fvr-input-error .fvr-input-underline{
-    border-color: #f56c6c;
-}
-
-.fvr-input-underline {
-    border-bottom: 1px solid #979797;
-    height: 41px;
-}
-.fvr-input-inside {
-    outline: none;
-    border: none;
-    padding: 0 0 0 10px;
-    flex: 1;
-    height: 100%;
-}
-
 .fvr-fullfill {
     flex: 1;
 }
