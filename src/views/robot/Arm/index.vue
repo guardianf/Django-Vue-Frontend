@@ -5,7 +5,6 @@
       <fvr-select v-model="arm_state" placeholder="State" multiple :options="arm_state_options" />
       <fvr-button type="icon" class="el-icon-plus" content="add" @click.native="addItem" />
       <fvr-button type="icon" class="el-icon-download" content="download" @click.native="downloadItems" />
-      <fvr-button type="icon" class="el-icon-refresh" content="refresh" @click.native="getItemList()" />
       <span style="flex: 1;" />
       <fvr-input v-model="search" placeholder="serial number" clearable append="el-icon-search" @keyup.enter.native="getItemList(1)">
         <i slot="prepend" class="el-icon-search" style="padding: 10px;cursor: pointer;" @click="getItemList(1)" />
@@ -27,42 +26,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="itemDialogVisible" width="600px">
-      <template slot="title">
-        <fvr-font bold size="m" type="black">[[ isEdit ? "Edit": "Add" ]] Arm</fvr-font>
-      </template>
-      <el-form :model="item" class="fvr-dialog--container">
-        <el-row type="flex" style="margin-bottom: 5px;">
-          <el-col :span="24">
-            <div style="background-color: var(--color-lightgrey);height: 1px;" />
-          </el-col>
-        </el-row>
-        <el-row type="flex" :gutter="20">
-          <el-col :span="12">
-            <fvr-font bold display="block" for="serialNumber">Serial Number</fvr-font>
-            <fvr-input v-model="item.serial_number" :disabled="isEdit ? true: false" @blur="uniqueCheck" />
-          </el-col>
-          <el-col :span="12">
-            <fvr-font bold display="block" for="type">Type</fvr-font>
-            <fvr-select v-model="item.type_id" style="width: 100%" :options="arm_types_options" />
-          </el-col>
-        </el-row>
-        <el-row type="flex" :gutter="20">
-          <el-col :span="12">
-            <fvr-font bold display="block" for="stateSelect">State</fvr-font>
-            <fvr-select v-model="item.state" default style="width: 100%" :options="arm_state_options" />
-          </el-col>
-          <el-col :span="12">
-            <fvr-font bold display="block" for="customer">Customer</fvr-font>
-            <fvr-select v-model="item.customer_id" style="width: 100%" :options="customer_options" />
-          </el-col>
-        </el-row>
-      </el-form>
-      <template slot="footer">
-        <fvr-button type="text" style="color: var(--color-default);" @click.native="itemDialogVisible = false;">Cancel</fvr-button>
-        <fvr-button type="text" style="font-weight: bold;" :disabled="createDisable" @click.native="saveItem">Save</fvr-button>
-      </template>
-    </el-dialog>
+    <arm-dialog ref="editDialog" />
     <!-- <el-confirm-dialog message="Are you sure to delete this arm?" @confirm="deleteItem" ref="delete_check" />
     <el-confirm-dialog message="The same serial number exist. Do you want to restore the data?" @confirm="restoreItem" @cancel="resetItem" ref="unique_check" /> -->
   </div>
@@ -71,13 +35,13 @@
 <script>
 import request from '@/utils/request'
 import { getCustomer, getDeviceState, getArms } from '@/api/robot'
-import fvrFont from '@/components/Fvr/Font'
 import fvrSelect from '@/components/Fvr/Select'
 import fvrInput from '@/components/Fvr/Input'
 import fvrButton from '@/components/Fvr/Button'
+import armDialog from './components/dialog'
 
 export default {
-  components: { fvrFont, fvrSelect, fvrInput, fvrButton },
+  components: { fvrSelect, fvrInput, fvrButton, armDialog },
   data() {
     return {
       customer: [], // filter: customer
@@ -93,9 +57,6 @@ export default {
         customer_id: null,
         state: null
       },
-      isEdit: false,
-      createDisable: false,
-      itemDialogVisible: false,
       tableData: []
     }
   },
@@ -121,27 +82,25 @@ export default {
   },
   methods: {
     resetItem() {},
-    getCustomer() {
-      getCustomer().then(res => {
-        const { data } = res
-        this.customer_options = data.map(item => {
-          const { name, id } = item
-          return {
-            label: name,
-            value: id
-          }
-        })
+    async getCustomer() {
+      const res = await getCustomer()
+      const { data } = res
+      this.customer_options = data.map(item => {
+        const { name, id } = item
+        return {
+          label: name,
+          value: id
+        }
       })
     },
-    getArmState() { // get arm state
-      getDeviceState().then(res => {
-        const { data } = res
-        this.arm_state_options = data.map(item => {
-          const [label, value] = item
-          return {
-            value, label
-          }
-        })
+    async getArmState() { // get arm state
+      const res = await getDeviceState()
+      const { data } = res
+      this.arm_state_options = data.map(item => {
+        const [label, value] = item
+        return {
+          value, label
+        }
       })
     },
     getItemList(page = this.curPage, page_size = this.pageSize) { // get table list
@@ -164,7 +123,6 @@ export default {
         const { code, data } = res
         if (code === 200) {
           const { results = [], count = 0, page_size = this.pageSize } = data
-          console.log(results)
           this.tableData = results.map(row => {
             const ret = this.customer_options.filter(opt => opt.value === row.customer_id)
             row.customer = ret.length > 0 ? ret[0].label : ''
@@ -189,6 +147,9 @@ export default {
           })
         }
       })
+    },
+    addItem() {
+      this.$refs.editDialog.show()
     },
     saveItem() {
       // serial number is required
@@ -259,31 +220,6 @@ export default {
         const code = data.code
         if (code === 20200) {
           this.item = data.data
-        }
-      })
-    },
-    uniqueCheck(serial_number) {
-      if (!serial_number) {
-        return
-      }
-      request.get(`/api/v1/robot/armx/${serial_number}/status/`).then((data) => {
-        if (data.code === 20200) {
-          switch (data.data.ret) {
-            case 1:// new
-              this.createDisable = false
-              this.createNew = true
-              break
-            case 2:// exist
-              this.createDisable = true
-              this.createNew = false
-              break
-            case 3:// deleted
-              this.createDisable = false
-              this.createNew = false
-              this.item.id = data.data.id
-              this.$refs.unique_check.show()
-              break
-          }
         }
       })
     },

@@ -23,7 +23,7 @@
                   autocomplete="off"
                   border="underline"
                 >
-                  <span class="svg-container" slot="prepend">
+                  <span slot="prepend" class="svg-container">
                     <svg-icon icon-class="user" />
                   </span>
                 </fvr-input>
