@@ -1,27 +1,27 @@
 <template>
   <div>
     <div class="btn-bar">
-      <el-select placeholder="Customer" v-model="customer" :options="customer_options" multiple />
-      <el-select placeholder="State" v-model="arm_state" :options="arm_state_options" multiple />
-      <el-button type="icon" @click.native="addItem" class="el-icon-plus" content="add" />
-      <el-button type="icon" @click.native="downloadItems" class="el-icon-download" content="download" />
-      <el-button type="icon" @click.native="getItemList()" class="el-icon-refresh" content="refresh" />
-      <span style="flex: 1;"></span>
-      <el-input placeholder="serial number"  v-model="search" clearable append="el-icon-search" @keyup.enter.native="getItemList(1)">
-        <i class="el-icon-search" @click="getItemList(1)" slot="prepend" style="padding: 10px;cursor: pointer;"></i>
+      <fvr-select v-model="customer" placeholder="Customer" multiple :options="customer_options" />
+      <fvr-select v-model="arm_state" placeholder="State" multiple :options="arm_state_options" />
+      <el-button type="icon" class="el-icon-plus" content="add" @click.native="addItem" />
+      <el-button type="icon" class="el-icon-download" content="download" @click.native="downloadItems" />
+      <el-button type="icon" class="el-icon-refresh" content="refresh" @click.native="getItemList()" />
+      <span style="flex: 1;" />
+      <el-input v-model="search" placeholder="serial number" clearable append="el-icon-search" @keyup.enter.native="getItemList(1)">
+        <i slot="prepend" class="el-icon-search" style="padding: 10px;cursor: pointer;" @click="getItemList(1)" />
       </el-input>
     </div>
     <el-table :data="tableData">
-      <el-table-column label="No." type="index" :index="getIndex"></el-table-column>
-      <el-table-column prop="serial_number" label="Serial Number"></el-table-column>
-      <el-table-column prop="type_name" label="Type"></el-table-column>
-      <el-table-column prop="state_name" label="State"></el-table-column>
-      <el-table-column prop="customer" label="Customer"></el-table-column>
-      <el-table-column  label="Action" width="100px">
+      <el-table-column label="No." type="index" :index="getIndex" />
+      <el-table-column prop="serial_number" label="Serial Number" />
+      <el-table-column prop="type_name" label="Type" />
+      <el-table-column prop="state_name" label="State" />
+      <el-table-column prop="customer" label="Customer" />
+      <el-table-column label="Action" width="100px">
         <template slot-scope="scope">
           <div style="display: flex;justify-content: space-around;">
-            <el-button type="icon" @click.native="handleEdit(scope.$index, scope.row)" class="el-icon-edit-outline" />
-            <el-button type="icon" @click.native="handleDelete(scope.$index, scope.row)" class="el-icon-delete" />
+            <el-button type="icon" class="el-icon-edit-outline" @click.native="handleEdit(scope.$index, scope.row)" />
+            <el-button type="icon" class="el-icon-delete" @click.native="handleDelete(scope.$index, scope.row)" />
           </div>
         </template>
       </el-table-column>
@@ -29,51 +29,53 @@
 
     <el-dialog :visible.sync="itemDialogVisible" width="600px">
       <template slot="title">
-        <el-font bold size="m" type="black">[[ isEdit ? "Edit": "Add" ]] Arm</el-font>
+        <fvr-font bold size="m" type="black">[[ isEdit ? "Edit": "Add" ]] Arm</fvr-font>
       </template>
       <el-form :model="item" class="fvr-dialog--container">
         <el-row type="flex" style="margin-bottom: 5px;">
           <el-col :span="24">
-            <div style="background-color: var(--color-lightgrey);height: 1px;"></div>
+            <div style="background-color: var(--color-lightgrey);height: 1px;" />
           </el-col>
         </el-row>
         <el-row type="flex" :gutter="20">
           <el-col :span="12">
-            <el-font bold display="block" for="serialNumber">Serial Number</el-font>
-            <el-input v-model="item.serial_number" @blur="uniqueCheck" :disabled="isEdit ? true: false"></el-input>
+            <fvr-font bold display="block" for="serialNumber">Serial Number</fvr-font>
+            <el-input v-model="item.serial_number" :disabled="isEdit ? true: false" @blur="uniqueCheck" />
           </el-col>
           <el-col :span="12">
-            <el-font bold display="block" for="type">Type</el-font>
-            <el-select :options="arm_types_options" v-model="item.type_id" style="width: 100%" />
+            <fvr-font bold display="block" for="type">Type</fvr-font>
+            <fvr-select v-model="item.type_id" style="width: 100%" :options="arm_types_options" />
           </el-col>
         </el-row>
         <el-row type="flex" :gutter="20">
           <el-col :span="12">
-            <el-font bold display="block" for="stateSelect">State</el-font>
-            <el-select :options="arm_state_options" v-model="item.state" default style="width: 100%" />
+            <fvr-font bold display="block" for="stateSelect">State</fvr-font>
+            <fvr-select v-model="item.state" default style="width: 100%" :options="arm_state_options" />
           </el-col>
           <el-col :span="12">
-            <el-font bold display="block" for="customer">Customer</el-font>
-            <el-select :options="customer_options" v-model="item.customer_id" style="width: 100%" />
+            <fvr-font bold display="block" for="customer">Customer</fvr-font>
+            <fvr-select v-model="item.customer_id" style="width: 100%" :options="customer_options" />
           </el-col>
         </el-row>
       </el-form>
       <template slot="footer">
-        <el-button type="text" @click.native="itemDialogVisible = false;" style="color: var(--color-default);">Cancel</el-button>
-        <el-button type="text" @click.native="saveItem" :disabled="createDisable" style="font-weight: bold;">Save</el-button>
+        <el-button type="text" style="color: var(--color-default);" @click.native="itemDialogVisible = false;">Cancel</el-button>
+        <el-button type="text" style="font-weight: bold;" :disabled="createDisable" @click.native="saveItem">Save</el-button>
       </template>
     </el-dialog>
-    
-    <el-confirm-dialog message="Are you sure to delete this arm?" @confirm="deleteItem" ref="delete_check" />
-    <el-confirm-dialog message="The same serial number exist. Do you want to restore the data?" @confirm="restoreItem" @cancel="resetItem" ref="unique_check" />
+    <!-- <el-confirm-dialog message="Are you sure to delete this arm?" @confirm="deleteItem" ref="delete_check" />
+    <el-confirm-dialog message="The same serial number exist. Do you want to restore the data?" @confirm="restoreItem" @cancel="resetItem" ref="unique_check" /> -->
   </div>
 </template>
 
 <script>
-import { request } from '@/utils/request';
-import { getCustomer, getDeviceState, getArms } from '@/api/robot';
+import request from '@/utils/request'
+import { getCustomer, getDeviceState, getArms } from '@/api/robot'
+import fvrFont from '@/components/Fvr/Font'
+import fvrSelect from '@/components/Fvr/Select'
 
 export default {
+  components: { fvrFont, fvrSelect },
   data() {
     return {
       customer: [], // filter: customer
@@ -81,12 +83,32 @@ export default {
       customer_options: [], // customer state
       arm_state_options: [], // arm state
       arm_types_options: [], // arm type
-      search: "", // query string
+      search: '', // query string
+      curPage: 0,
+      pageSize: 10,
       item: { // arm data
         type_id: null,
         customer_id: null,
-        state: null,
+        state: null
       },
+      isEdit: false,
+      createDisable: false,
+      itemDialogVisible: false,
+      tableData: []
+    }
+  },
+  watch: {
+    'arm_state': {
+      handler(newVal) {
+        this.getItemList(1)
+      },
+      deep: true
+    },
+    'customer': {
+      handler(newVal) {
+        this.getItemList(1)
+      },
+      deep: true
     }
   },
   created() {
@@ -95,43 +117,32 @@ export default {
     // this.getArmTypes()
     this.getItemList()
   },
-  watch: {
-    'arm_state': {
-      handler(newVal) {
-        this.getItemList(1)
-      },
-      deep: true,
-    },
-    'customer': {
-      handler(newVal) {
-        this.getItemList(1)
-      },
-      deep: true,
-    },
-  },
   methods: {
+    resetItem() {},
     getCustomer() {
-      getCustomer().then(( data ) => {
-        this.customer_options = data.customers.map(item => {
+      getCustomer().then(res => {
+        const { data } = res
+        this.customer_options = data.map(item => {
           const { name, id } = item
           return {
             label: name,
-            value: id,
+            value: id
           }
         })
       })
     },
     getArmState() { // get arm state
-      getDeviceState().then(( data ) => {
-        self.arm_state_options = data.data.map(item => {
+      getDeviceState().then(res => {
+        const { data } = res
+        this.arm_state_options = data.map(item => {
           const [value, label] = item
           return {
-            value, label,
+            value, label
           }
         })
       })
     },
-    getItemList(page=this.curPage,page_size=this.pageSize) { // get table list
+    getItemList(page = this.curPage, page_size = this.pageSize) { // get table list
       const urlParams = [
         `page=${page}`,
         `page_size=${page_size}`
@@ -147,9 +158,11 @@ export default {
       if (this.search) {
         urlParams.push(`search=${this.search}`)
       }
-      getArms(urlParams).then((data) => {
-        if (data.code === 20200) {
-          const { results = [], count = 0, page_size = this.pageSize } = data.data
+      getArms(urlParams).then(res => {
+        const { code, data } = res;
+        if (code === 200) {
+          const { results = [], count = 0, page_size = this.pageSize } = data
+          console.log(results)
           this.tableData = results.map(row => {
             const ret = this.customer_options.filter(opt => opt.value === row.customer_id)
             row.customer = ret.length > 0 ? ret[0].label : ''
@@ -169,11 +182,10 @@ export default {
           this.arm_types_options = results.map(item => {
             const { name, id } = item
             return {
-              value: id, label: name,
+              value: id, label: name
             }
           })
         }
-        
       })
     },
     saveItem() {
@@ -181,21 +193,21 @@ export default {
       if (!this.item.serial_number) {
         this.$message({
           type: 'error',
-          message: 'Serial Number is required',
+          message: 'Serial Number is required'
         })
         return
       }
 
       let url = ''
-      let { id } = this.item
+      const { id } = this.item
       let method = ''
-      if (id) {// is not new
-        url = `/api/v1/robot/${ this.isEdit ? `arm` : `armx`}/${ id }/`
+      if (id) { // is not new
+        url = `/api/v1/robot/${this.isEdit ? `arm` : `armx`}/${id}/`
         method = 'Put'
         this.item.is_deleted = false
-      } else {// create new item
-        url = `/api/v1/robot/${this.isEdit ? `arm/${ id }`: 'arms/' }`
-        method = this.isEdit ? 'PUT': 'POST'
+      } else { // create new item
+        url = `/api/v1/robot/${this.isEdit ? `arm/${id}` : 'arms/'}`
+        method = this.isEdit ? 'PUT' : 'POST'
       }
       request({
         method,
@@ -203,25 +215,25 @@ export default {
         data: this.item,
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      }).then(( data ) => {
+          'Accept': 'application/json'
+        }
+      }).then(res => {
         this.saveItemCallback()
       })
     },
     downloadItems() {
       request({
         url: '/api/v1/robot/arms/',
-        type: 'get',
+        type: 'get'
       }).then((data) => {
         if (data.code === 20200) {
           const { results = [] } = data.data
           const items = results
           let csv = [
-            ['No.', 'Serial Number', 'Type', 'State', 'Customer', ],
+            ['No.', 'Serial Number', 'Type', 'State', 'Customer']
           ]
-          for(let i = 0; i < items.length; i++) {
-            let row = [i + 1, items[i].serial_number, items[i].type_name, items[i].state_name, items[i].customer_id, ]
+          for (let i = 0; i < items.length; i++) {
+            let row = [i + 1, items[i].serial_number, items[i].type_name, items[i].state_name, items[i].customer_id]
             row = row.join(',')
             csv.push(row)
           }
@@ -272,11 +284,23 @@ export default {
           }
         }
       })
+    },
+    getIndex(row) {
+      return row + 1
     }
   }
 }
 </script>
 
 <style lang='scss' scoped>
-
+  .btn-bar {
+    display: flex;
+    flex-flow: row;
+    & > *:not(:first-child) {
+      margin-left: 5px;
+    }
+    & > *:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
 </style>

@@ -17,8 +17,7 @@ export function getDeviceState() {
 
 export function getArms(params) {
     return request({
-        url: '/api/v1/robot/arms/',
-        method: 'get',
-        params: params
+        url: `/api/v1/robot/arms/?${params.join('&')}`,
+        method: 'get'
     });
 }

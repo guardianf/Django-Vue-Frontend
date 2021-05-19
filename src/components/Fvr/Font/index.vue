@@ -1,7 +1,6 @@
 <template>
-  <span
-    :class="['fvr-font-'+ size, 'fvr-font-color-' + type]">
-    <slot></slot>
+  <span :class="['fvr-font-'+ size, 'fvr-font-color-' + type]">
+    <slot />
   </span>
 </template>
 
@@ -19,15 +18,16 @@ export default {
       type: String,
       default: 'b',
       validator(val) {
-        return FontSize.indexOf(val.toLowerCase()) !== -1;
+        return FontSize.indexOf(val.toLowerCase()) !== -1
       }
-    }, 
+    },
     type: {
+      type: String,
       default: 'default',
       validator(value) {
-        return ['error', 'default'].indexOf(value.toLowerCase()) !== -1
+        return ['default', 'error', 'black'].indexOf(value.toLowerCase()) !== -1
       }
     }
-  },
+  }
 }
 </script>
