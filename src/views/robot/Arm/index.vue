@@ -19,14 +19,14 @@
       <el-table-column label="Action" width="100px">
         <template slot-scope="scope">
           <div style="display: flex;justify-content: space-around;">
-            <fvr-button type="icon" class="el-icon-edit-outline" @click.native="handleEdit(scope.$index, scope.row)" />
-            <fvr-button type="icon" class="el-icon-delete" @click.native="handleDelete(scope.$index, scope.row)" />
+            <fvr-button type="icon" class="el-icon-edit-outline" @click.native="handleEdit(scope.row)" />
+            <fvr-button type="icon" class="el-icon-delete" @click.native="handleDelete(scope.row)" />
           </div>
         </template>
       </el-table-column>
     </el-table>
 
-    <arm-dialog ref="editDialog" />
+    <arm-dialog ref="editDialog" :item="item" />
     <!-- <el-confirm-dialog message="Are you sure to delete this arm?" @confirm="deleteItem" ref="delete_check" />
     <el-confirm-dialog message="The same serial number exist. Do you want to restore the data?" @confirm="restoreItem" @cancel="resetItem" ref="unique_check" /> -->
   </div>
@@ -55,9 +55,9 @@ export default {
       item: { // arm data
         type_id: null,
         customer_id: null,
-        state: null
+        state: null,
       },
-      tableData: []
+      tableData: [],
     }
   },
   watch: {
@@ -206,6 +206,14 @@ export default {
           // blob2xlsx(blob, 'download_arms.xlsx')
         }
       })
+    },
+    handleEdit(item) {
+      this.item = item;
+      this.$refs.editDialog.show();
+    },
+    handleDelete(data) {
+      console.log(this.tableData);
+      // this.tableData = this.tableData.filter(item => item.id !== data.id);
     },
     deleteItem() {
       const { id } = this.item

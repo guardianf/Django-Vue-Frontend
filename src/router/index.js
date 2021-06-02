@@ -170,7 +170,7 @@ export const asyncRoutes = [
         path: 'downloadcenter',
         component: () => import('@/views/example/create'),
         name: 'DownloadCenter',
-        meta: { title: 'Download Center', icon: 'edit' }
+        meta: { title: 'Download Center', icon: 'el-icon-download' }
       }
     ]
   },
@@ -178,7 +178,7 @@ export const asyncRoutes = [
   {
     path: '/management',
     component: Layout,
-    meta: { title: 'Management Service', icon: 'edit' },
+    meta: { title: 'Management Service', icon: 'peoples' },
     children: [
       {
         path: 'user',

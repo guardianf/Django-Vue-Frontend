@@ -9,22 +9,26 @@
     <el-form ref="form" :model="item">
       <el-row type="flex" :gutter="20">
         <el-col :span="12">
-          <fvr-font bold display="block" for="serialNumber">Serial Number</fvr-font>
-          <fvr-input v-model="item.serial_number" :disabled="isEdit ? true: false" @blur="uniqueCheck" />
+          <el-form-item prop="serial_number" label="Serial Number">
+            <fvr-input v-model="item.serial_number" :disabled="isEdit ? true: false" @blur="uniqueCheck" />
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <fvr-font bold display="block" for="type">Type</fvr-font>
-          <fvr-select v-model="item.type_id" style="width: 100%" :options="arm_types_options" />
+          <el-form-item prop="type_id" label="Type">
+            <fvr-select v-model="item.type_id" style="width: 100%" :options="arm_types_options" />
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row type="flex" :gutter="20">
         <el-col :span="12">
-          <fvr-font bold display="block" for="stateSelect">State</fvr-font>
-          <fvr-select v-model="item.state" default style="width: 100%" :options="arm_state_options" />
+          <el-form-item prop="state" label="State">
+            <fvr-select v-model="item.state" default style="width: 100%" :options="arm_state_options" />
+          </el-form-item>
         </el-col>
         <el-col :span="12">
-          <fvr-font bold display="block" for="customer">Customer</fvr-font>
-          <fvr-select v-model="item.customer_id" style="width: 100%" :options="customer_options" />
+          <el-form-item prop="customer_id" label="Customer">
+            <fvr-select v-model="item.customer_id" style="width: 100%" :options="customer_options" />
+          </el-form-item>
         </el-col>
       </el-row>
     </el-form>
@@ -97,3 +101,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.el-form-item__label {
+  float: none;
+}
+</style>
