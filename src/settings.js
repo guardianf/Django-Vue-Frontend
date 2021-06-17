@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Django Vue Frontend',
+  title: '',
 
   /**
    * @type {boolean} true | false
