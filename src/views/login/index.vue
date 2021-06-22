@@ -12,10 +12,8 @@
                 <h3 class="title">Sign In</h3>
               </div>
               <el-form-item prop="username">
-                <span class="svg-container">
-                  <svg-icon icon-class="user" />
-                </span>
-                <el-input
+                <span class="svg-container" />
+                <fvr-input
                   ref="username"
                   v-model="loginForm.username"
                   placeholder="Username"
@@ -23,14 +21,16 @@
                   type="text"
                   tabindex="1"
                   autocomplete="off"
-                />
+                  border="underline"
+                >
+                  <span slot="prepend" class="svg-container">
+                    <svg-icon icon-class="user" />
+                  </span>
+                </fvr-input>
               </el-form-item>
               <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
                 <el-form-item prop="password">
-                  <span class="svg-container">
-                    <svg-icon icon-class="password" />
-                  </span>
-                  <el-input
+                  <fvr-input
                     :key="passwordType"
                     ref="password"
                     v-model="loginForm.password"
@@ -39,13 +39,18 @@
                     name="password"
                     tabindex="2"
                     autocomplete="off"
+                    border="underline"
                     @keyup.native="checkCapslock"
                     @blur="capsTooltip = false"
                     @keyup.enter.native="handleLogin"
-                  />
-                  <span class="show-pwd" @click="showPwd">
-                    <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-                  </span>
+                  >
+                    <span slot="prepend" class="svg-container">
+                      <svg-icon icon-class="password" />
+                    </span>
+                    <span slot="append" class="show-pwd" @click="showPwd">
+                      <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+                    </span>
+                  </fvr-input>
                 </el-form-item>
               </el-tooltip>
               <el-form-item prop="captcha">
@@ -71,11 +76,12 @@
 <script>
 import fvrBanner from '@/components/Fvr/Banner'
 import fvrCaptcha from '@/components/Fvr/Captcha'
+import fvrInput from '@/components/Fvr/Input'
 
 export default {
   name: 'Login',
   components: {
-    fvrBanner, fvrCaptcha
+    fvrBanner, fvrCaptcha, fvrInput
   },
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -220,8 +226,6 @@ $cursor: #797979;
   }
 
   .el-form-item {
-    border-bottom: 1px solid #979797;
-    color: #454545;
     width: 100%;
   }
 }

@@ -48,7 +48,7 @@ module.exports = {
     before: require('./mock/mock-server.js'),
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
-        target: "http://10.21.0.129:8080",
+        target: process.env.VUE_BACKEND_HOST,
         changeOrigin: true,
         ws: true,
         secure: false,

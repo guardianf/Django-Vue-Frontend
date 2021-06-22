@@ -3,13 +3,12 @@
     <div class="btn-bar">
       <fvr-select v-model="customer" placeholder="Customer" multiple :options="customer_options" />
       <fvr-select v-model="arm_state" placeholder="State" multiple :options="arm_state_options" />
-      <el-button type="icon" class="el-icon-plus" content="add" @click.native="addItem" />
-      <el-button type="icon" class="el-icon-download" content="download" @click.native="downloadItems" />
-      <el-button type="icon" class="el-icon-refresh" content="refresh" @click.native="getItemList()" />
+      <fvr-button type="icon" class="el-icon-plus" content="add" @click.native="addItem" />
+      <fvr-button type="icon" class="el-icon-download" content="download" @click.native="downloadItems" />
       <span style="flex: 1;" />
-      <el-input v-model="search" placeholder="serial number" clearable append="el-icon-search" @keyup.enter.native="getItemList(1)">
+      <fvr-input v-model="search" placeholder="serial number" clearable append="el-icon-search" @keyup.enter.native="getItemList(1)">
         <i slot="prepend" class="el-icon-search" style="padding: 10px;cursor: pointer;" @click="getItemList(1)" />
-      </el-input>
+      </fvr-input>
     </div>
     <el-table :data="tableData">
       <el-table-column label="No." type="index" :index="getIndex" />
@@ -20,49 +19,14 @@
       <el-table-column label="Action" width="100px">
         <template slot-scope="scope">
           <div style="display: flex;justify-content: space-around;">
-            <el-button type="icon" class="el-icon-edit-outline" @click.native="handleEdit(scope.$index, scope.row)" />
-            <el-button type="icon" class="el-icon-delete" @click.native="handleDelete(scope.$index, scope.row)" />
+            <fvr-button type="icon" class="el-icon-edit-outline" @click.native="handleEdit(scope.row)" />
+            <fvr-button type="icon" class="el-icon-delete" @click.native="handleDelete(scope.row)" />
           </div>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="itemDialogVisible" width="600px">
-      <template slot="title">
-        <fvr-font bold size="m" type="black">[[ isEdit ? "Edit": "Add" ]] Arm</fvr-font>
-      </template>
-      <el-form :model="item" class="fvr-dialog--container">
-        <el-row type="flex" style="margin-bottom: 5px;">
-          <el-col :span="24">
-            <div style="background-color: var(--color-lightgrey);height: 1px;" />
-          </el-col>
-        </el-row>
-        <el-row type="flex" :gutter="20">
-          <el-col :span="12">
-            <fvr-font bold display="block" for="serialNumber">Serial Number</fvr-font>
-            <el-input v-model="item.serial_number" :disabled="isEdit ? true: false" @blur="uniqueCheck" />
-          </el-col>
-          <el-col :span="12">
-            <fvr-font bold display="block" for="type">Type</fvr-font>
-            <fvr-select v-model="item.type_id" style="width: 100%" :options="arm_types_options" />
-          </el-col>
-        </el-row>
-        <el-row type="flex" :gutter="20">
-          <el-col :span="12">
-            <fvr-font bold display="block" for="stateSelect">State</fvr-font>
-            <fvr-select v-model="item.state" default style="width: 100%" :options="arm_state_options" />
-          </el-col>
-          <el-col :span="12">
-            <fvr-font bold display="block" for="customer">Customer</fvr-font>
-            <fvr-select v-model="item.customer_id" style="width: 100%" :options="customer_options" />
-          </el-col>
-        </el-row>
-      </el-form>
-      <template slot="footer">
-        <el-button type="text" style="color: var(--color-default);" @click.native="itemDialogVisible = false;">Cancel</el-button>
-        <el-button type="text" style="font-weight: bold;" :disabled="createDisable" @click.native="saveItem">Save</el-button>
-      </template>
-    </el-dialog>
+    <arm-dialog ref="editDialog" :item="item" />
     <!-- <el-confirm-dialog message="Are you sure to delete this arm?" @confirm="deleteItem" ref="delete_check" />
     <el-confirm-dialog message="The same serial number exist. Do you want to restore the data?" @confirm="restoreItem" @cancel="resetItem" ref="unique_check" /> -->
   </div>
@@ -71,11 +35,13 @@
 <script>
 import request from '@/utils/request'
 import { getCustomer, getDeviceState, getArms } from '@/api/robot'
-import fvrFont from '@/components/Fvr/Font'
 import fvrSelect from '@/components/Fvr/Select'
+import fvrInput from '@/components/Fvr/Input'
+import fvrButton from '@/components/Fvr/Button'
+import armDialog from './components/dialog'
 
 export default {
-  components: { fvrFont, fvrSelect },
+  components: { fvrSelect, fvrInput, fvrButton, armDialog },
   data() {
     return {
       customer: [], // filter: customer
@@ -89,12 +55,9 @@ export default {
       item: { // arm data
         type_id: null,
         customer_id: null,
-        state: null
+        state: null,
       },
-      isEdit: false,
-      createDisable: false,
-      itemDialogVisible: false,
-      tableData: []
+      tableData: [],
     }
   },
   watch: {
@@ -119,27 +82,25 @@ export default {
   },
   methods: {
     resetItem() {},
-    getCustomer() {
-      getCustomer().then(res => {
-        const { data } = res
-        this.customer_options = data.map(item => {
-          const { name, id } = item
-          return {
-            label: name,
-            value: id
-          }
-        })
+    async getCustomer() {
+      const res = await getCustomer()
+      const { data } = res
+      this.customer_options = data.map(item => {
+        const { name, id } = item
+        return {
+          label: name,
+          value: id
+        }
       })
     },
-    getArmState() { // get arm state
-      getDeviceState().then(res => {
-        const { data } = res
-        this.arm_state_options = data.map(item => {
-          const [value, label] = item
-          return {
-            value, label
-          }
-        })
+    async getArmState() { // get arm state
+      const res = await getDeviceState()
+      const { data } = res
+      this.arm_state_options = data.map(item => {
+        const [label, value] = item
+        return {
+          value, label
+        }
       })
     },
     getItemList(page = this.curPage, page_size = this.pageSize) { // get table list
@@ -159,10 +120,9 @@ export default {
         urlParams.push(`search=${this.search}`)
       }
       getArms(urlParams).then(res => {
-        const { code, data } = res;
+        const { code, data } = res
         if (code === 200) {
           const { results = [], count = 0, page_size = this.pageSize } = data
-          console.log(results)
           this.tableData = results.map(row => {
             const ret = this.customer_options.filter(opt => opt.value === row.customer_id)
             row.customer = ret.length > 0 ? ret[0].label : ''
@@ -187,6 +147,9 @@ export default {
           })
         }
       })
+    },
+    addItem() {
+      this.$refs.editDialog.show()
     },
     saveItem() {
       // serial number is required
@@ -244,6 +207,14 @@ export default {
         }
       })
     },
+    handleEdit(item) {
+      this.item = item;
+      this.$refs.editDialog.show();
+    },
+    handleDelete(data) {
+      console.log(this.tableData);
+      // this.tableData = this.tableData.filter(item => item.id !== data.id);
+    },
     deleteItem() {
       const { id } = this.item
       const url = `/api/v1/robot/arm/${id}/`
@@ -260,31 +231,6 @@ export default {
         }
       })
     },
-    uniqueCheck(serial_number) {
-      if (!serial_number) {
-        return
-      }
-      request.get(`/api/v1/robot/armx/${serial_number}/status/`).then((data) => {
-        if (data.code === 20200) {
-          switch (data.data.ret) {
-            case 1:// new
-              this.createDisable = false
-              this.createNew = true
-              break
-            case 2:// exist
-              this.createDisable = true
-              this.createNew = false
-              break
-            case 3:// deleted
-              this.createDisable = false
-              this.createNew = false
-              this.item.id = data.data.id
-              this.$refs.unique_check.show()
-              break
-          }
-        }
-      })
-    },
     getIndex(row) {
       return row + 1
     }
@@ -293,14 +239,17 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-  .btn-bar {
-    display: flex;
-    flex-flow: row;
-    & > *:not(:first-child) {
-      margin-left: 5px;
-    }
-    & > *:not(:last-child) {
-      margin-right: 5px;
-    }
+@import '@/styles/variables.scss';
+
+.btn-bar {
+  display: flex;
+  flex-flow: row;
+  margin-bottom: 20px;
+  & > *:not(:first-child) {
+    margin-left: 5px;
   }
+  & > *:not(:last-child) {
+    margin-right: 5px;
+  }
+}
 </style>
