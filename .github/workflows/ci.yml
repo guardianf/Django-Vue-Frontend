@@ -4,14 +4,19 @@ on:
     branches:
       - develop
 jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Test Unit
+        run: npm run test:unit
   build-and-deploy:
     runs-on: ubuntu-18.04
+    needs: test
     steps:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: Build and Deploy
-      uses: JamesIves/github-pages-deploy-action@dev
+    - name: Deploy
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: develop
