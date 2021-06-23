@@ -17,8 +17,9 @@ jobs:
       uses: actions/checkout@master
 
     - name: Deploy
+      run: |
+        npm install
+        npm run build
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: develop
-        FOLDER: build
-        BUILD_SCRIPT: npm install && npm run build
