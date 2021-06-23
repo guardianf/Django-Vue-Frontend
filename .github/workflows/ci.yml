@@ -13,8 +13,8 @@ jobs:
 
     - name: Test Unit
       run: |
-      npm install
-      npm run test:unit
+        npm install
+        npm run test:unit
   build-and-deploy:
     runs-on: ubuntu-18.04
     needs: test
