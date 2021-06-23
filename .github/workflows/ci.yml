@@ -13,8 +13,10 @@ jobs:
     runs-on: ubuntu-18.04
     needs: pre
     steps:
-      - name: Test Unit
-        run: npm run test:unit
+    - name: List files
+      run: ls
+    - name: Test Unit
+      run: npm run test:unit
   build-and-deploy:
     runs-on: ubuntu-18.04
     needs: test
