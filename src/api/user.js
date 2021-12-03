@@ -8,15 +8,20 @@ export function login(data) {
       formData.append(key, value)
     }
   }
-  return request({
-    url: '/api/v1/login/',
-    method: 'post',
-    data: formData,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/form-data'
+  return Promise.resolve({
+    data: {
+      token: '123'
     }
   })
+  // return request({
+  //   url: '/api/v1/login/',
+  //   method: 'post',
+  //   data: formData,
+  //   headers: {
+  //     'Accept': 'application/json',
+  //     'Content-Type': 'application/form-data'
+  //   }
+  // })
 }
 
 export function getInfo(token) {

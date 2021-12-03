@@ -127,7 +127,7 @@ export const asyncRoutes = [
       },
       {
         path: 'joint',
-        component: () => import('@/views/permission/directive'),
+        component: () => import('@/views/robot/Joint'),
         name: 'Joint',
         meta: {
           title: 'Joint'

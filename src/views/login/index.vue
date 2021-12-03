@@ -12,7 +12,6 @@
                 <h3 class="title">Sign In</h3>
               </div>
               <el-form-item prop="username">
-                <span class="svg-container" />
                 <fvr-input
                   ref="username"
                   v-model="loginForm.username"
@@ -23,9 +22,10 @@
                   autocomplete="off"
                   border="underline"
                 >
-                  <span slot="prepend" class="svg-container">
-                    <svg-icon icon-class="user" />
-                  </span>
+                  <i
+                    slot="prefix"
+                    class="el-icon-user"
+                  />
                 </fvr-input>
               </el-form-item>
               <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
@@ -44,12 +44,10 @@
                     @blur="capsTooltip = false"
                     @keyup.enter.native="handleLogin"
                   >
-                    <span slot="prepend" class="svg-container">
-                      <svg-icon icon-class="password" />
-                    </span>
-                    <span slot="append" class="show-pwd" @click="showPwd">
-                      <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-                    </span>
+                    <i
+                      slot="prefix"
+                      class="el-icon-lock"
+                    />
                   </fvr-input>
                 </el-form-item>
               </el-tooltip>
@@ -209,15 +207,6 @@ $cursor: #797979;
     width: 85%;
 
     input {
-      background: transparent;
-      border: 0px;
-      -webkit-appearance: none;
-      border-radius: 0px;
-      padding: 12px 5px 12px 15px;
-      color: $light_gray;
-      height: 47px;
-      caret-color: $cursor;
-
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
